@@ -1,0 +1,14 @@
+[flake8]
+max-line-length = 120
+select = E,W,F,I,C
+    # prohibit bare '# type: ignore' comments
+    TI100
+    # prohibit bare comparisons
+    B015
+    # Force use of PEP 585 generics
+    PEA001
+    # Force use of `|` for union types
+    UNT001
+enable-extensions=G # detects logging format violations by plugin flake8-logging-format
+ignore = W503,E501,E203
+max-complexity = 10
