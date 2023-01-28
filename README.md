@@ -1,5 +1,5 @@
 CFC Tech Challenge
-===============
+==================
 
 **Candidate Name:** Tom Neys
 
@@ -10,4 +10,15 @@ Instructions on how to install it can be found [here](https://python-poetry.org/
 ### Install dependencies
 ```
 make install
+```
+
+### Execute script
+Set your working directory to the top-level code environment (meaning "src/cfc_challenge")
+```
+cd src/cfc_challenge
+```
+
+and then execute it with:
+```
+poetry run python -m main
 ```
