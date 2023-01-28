@@ -10,7 +10,7 @@ class Resource:
     source: str
     tag: str
 
-    def dict(self):
+    def dict(self) -> dict[str, str]:
         return {k: str(v) for k, v in asdict(self).items()}
 
 
@@ -39,12 +39,13 @@ def get_external_resources(response: Response) -> list[Resource]:
 
 def get_hyperlinks(response: Response) -> tuple[dict[str, str], str]:
     """
-    Extracts all hyperlinks and returns a tuple containing an enumerated dict of the links and a link to Privacy Policy
+    Extracts all hyperlinks and returns a tuple
+    containing an enumerated dict of all links and the link to Privacy Policy
     """
     soup = BeautifulSoup(response.content, "lxml")
     anchor_tags = soup.find_all("a", href=True)
     links = set()
-    privacy_policy: str | None = None
+    privacy_policy = ""
 
     for tag in anchor_tags:
         if tag.name == "a" and (tag["href"].startswith("/") or tag["href"].startswith("https")):
@@ -54,14 +55,14 @@ def get_hyperlinks(response: Response) -> tuple[dict[str, str], str]:
             if "privacy-policy" in link:
                 privacy_policy = link
 
-    return {k: v for k, v in zip(range(len(links)), links)}, privacy_policy
+    return {str(k): v for k, v in zip(range(len(links)), links)}, privacy_policy
 
 
 def get_word_frequency_count(response: Response) -> dict[str, int]:
     """
     Gets a case insensitive count of the word frequency inside the response
     """
-    words = {}
+    words: dict[str, int] = {}
     soup = BeautifulSoup(response.content, "lxml")
 
     # Remove text that is hidden from view

@@ -7,9 +7,9 @@ def main() -> int:
     """
     Entry point
     """
-    get_cfc_data()
+    exit_code = get_cfc_data()
 
-    return 0
+    return exit_code
 
 
 if __name__ == "__main__":
