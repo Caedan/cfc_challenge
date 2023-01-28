@@ -1,4 +1,5 @@
 import json
+import os
 from typing import Any
 
 import requests
@@ -45,5 +46,8 @@ def get_cfc_data() -> int:
 
 
 def _save_dict_to_json(data: dict[str, Any], file_name: str) -> None:
+    if not os.path.exists('JSON'):
+        os.makedirs('JSON')
+
     with open(f"JSON/{file_name}", "w") as json_file:
         json.dump(data, json_file, indent=4)
