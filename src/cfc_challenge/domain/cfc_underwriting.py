@@ -77,6 +77,9 @@ def get_word_frequency_count(response: Response) -> dict[str, int]:
             regex = re.compile("[^a-zA-Z]")
             clean_word = regex.sub("", word)
 
+            if clean_word == "":
+                continue
+
             if clean_word != "US":
                 clean_word = clean_word.lower()
 
