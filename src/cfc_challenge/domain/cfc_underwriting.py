@@ -1,6 +1,7 @@
+import re
 from dataclasses import dataclass, asdict
 
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Comment, ResultSet
 from requests import Response
 
 
@@ -60,4 +61,38 @@ def get_word_frequency_count(response: Response) -> dict[str, int]:
     """
     Gets a case insensitive count of the word frequency inside the response
     """
-    pass
+    words = {}
+    soup = BeautifulSoup(response.content, "lxml")
+
+    # Remove text that is hidden from view
+    soup.find("div", {"class": "popup-holder"}).decompose()
+    soup.find("div", {"class": "newsletter"}).decompose()
+
+    text = soup.body.findAll(text=True)
+    visible_texts = list(filter(_tag_visible, text))
+
+    for text in visible_texts:
+        for word in text.split():
+            regex = re.compile("[^a-zA-Z]")
+            clean_word = regex.sub("", word)
+
+            if clean_word != "US":
+                clean_word = clean_word.lower()
+
+            if not words.get(clean_word):
+                words[clean_word] = 1
+            else:
+                words[clean_word] += 1
+
+    return words
+
+
+def _tag_visible(element: ResultSet) -> bool:
+    if element.parent.name in ["style", "script", "head", "title", "meta", "[document]"]:
+        return False
+    if isinstance(element, Comment):
+        return False
+    if element in ["\n", "↑", " ", "\xa0"] or any(re.findall("[0-9]+", str(element))):
+        return False
+
+    return True
