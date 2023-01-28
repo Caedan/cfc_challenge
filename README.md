@@ -22,3 +22,5 @@ and then execute it with:
 ```
 poetry run python -m main
 ```
+
+You'll see that 3 new JSON files have been added to the JSON directory.
